@@ -5,240 +5,284 @@ import java.text.SimpleDateFormat;
 
 public class Funcionario {
 
-private static final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 
-    private Long codfun = null;
-    private String nome = null;
-    private String funcao = null;
-    private String endereco = null;
-    private String numero = null;
-    private String comple = null;
-    private String bairro = null;
-    private String cid = null;
-    private String uf = null;
-    private String telefone = null;
-    private String cep = null;
-    private Date nasc = null;
-    private String sexo = null;
-    private String ecivil = null;
-    private String email = null;
-    private String depto = null;
-    private String cbo = null;
-    private String numdep = null;
-    private String cpf = null;
-    private String pis = null;
-    private String numrg = null;
-    private String orgrg = null;
-    private String mae = null;
+	private Long codfun = null;
+	private String nome = null;
+	private String funcao = null;
+	private String endereco = null;
+	private String numero = null;
+	private String comple = null;
+	private String bairro = null;
+	private String cid = null;
+	private String uf = null;
+	private String telefone = null;
+	private String cep = null;
+	private Date nasc = null;
+	private String sexo = null;
+	private String ecivil = null;
+	private String email = null;
+	private String depto = null;
+	private String cbo = null;
+	private String numdep = null;
+	private String cpf = null;
+	private String pis = null;
+	private String numrg = null;
+	private String orgrg = null;
+	private String mae = null;
 
-    public Funcionario() {
-        
-    }
-    
-    public Funcionario(String cpf, String pis, String nome, Date nasc) {
-        this.cpf = clear(cpf);
-        this.pis = clear(pis);
-        nome = clear(nome);
-        if (nome != null && nome.length() > 70) {
-            this.nome = nome.substring(0, 70);
-        } else {
-            this.nome = nome;
-        }
-        this.nasc = nasc;
-    }
+	public Funcionario() {
 
-    public Long getCodfun() {
-        return codfun;
-    }
+	}
 
-    public void setCodfun(Long codfun) {
-        this.codfun = codfun;
-    }
+	public Funcionario(String cpf, String pis, String nome, Date nasc) {
+		this.cpf = clear(cpf);
+		this.pis = clear(pis);
+		nome = clear(nome);
+		if (nome != null && nome.length() > 70) {
+			this.nome = nome.substring(0, 70);
+		} else {
+			this.nome = nome;
+		}
+		this.nasc = nasc;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public Long getCodfun() {
+		return codfun;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public void setCodfun(Long codfun) {
+		this.codfun = codfun;
+	}
 
-    public String getFuncao() {
-        return funcao;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public void setFuncao(String funcao) {
-        this.funcao = funcao;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public String getEndereco() {
-        return endereco;
-    }
+	public String getFuncao() {
+		return funcao;
+	}
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
+	public void setFuncao(String funcao) {
+		this.funcao = funcao;
+	}
 
-    public String getNumero() {
-        return numero;
-    }
+	public String getEndereco() {
+		return endereco;
+	}
 
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
 
-    public String getComple() {
-        return comple;
-    }
+	public String getNumero() {
+		return numero;
+	}
 
-    public void setComple(String comple) {
-        this.comple = comple;
-    }
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
 
-    public String getBairro() {
-        return bairro;
-    }
+	public String getComple() {
+		return comple;
+	}
 
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
+	public void setComple(String comple) {
+		this.comple = comple;
+	}
 
-    public String getCid() {
-        return cid;
-    }
+	public String getBairro() {
+		return bairro;
+	}
 
-    public void setCid(String cid) {
-        this.cid = cid;
-    }
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
 
-    public String getUf() {
-        return uf;
-    }
+	public String getCid() {
+		return cid;
+	}
 
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
 
-    public String getTelefone() {
-        return telefone;
-    }
+	public String getUf() {
+		return uf;
+	}
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
 
-    public String getCep() {
-        return cep;
-    }
+	public String getTelefone() {
+		return telefone;
+	}
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
 
-    public Date getNasc() {
-        return nasc;
-    }
+	public String getCep() {
+		return cep;
+	}
 
-    public void setNasc(Date nasc) {
-        this.nasc = nasc;
-    }
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
 
-    public String getSexo() {
-        return sexo;
-    }
+	public Date getNasc() {
+		return nasc;
+	}
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
+	public void setNasc(Date nasc) {
+		this.nasc = nasc;
+	}
 
-    public String getEcivil() {
-        return ecivil;
-    }
+	public String getSexo() {
+		return sexo;
+	}
 
-    public void setEcivil(String ecivil) {
-        this.ecivil = ecivil;
-    }
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEcivil() {
+		return ecivil;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEcivil(String ecivil) {
+		this.ecivil = ecivil;
+	}
 
-    public String getDepto() {
-        return depto;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setDepto(String depto) {
-        this.depto = depto;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getCbo() {
-        return cbo;
-    }
+	public String getDepto() {
+		return depto;
+	}
 
-    public void setCbo(String cbo) {
-        this.cbo = cbo;
-    }
+	public void setDepto(String depto) {
+		this.depto = depto;
+	}
 
-    public String getNumdep() {
-        return numdep;
-    }
+	public String getCbo() {
+		return cbo;
+	}
 
-    public void setNumdep(String numdep) {
-        this.numdep = numdep;
-    }
+	public void setCbo(String cbo) {
+		this.cbo = cbo;
+	}
 
-    public String getCpf() {
-        return cpf;
-    }
+	public String getNumdep() {
+		return numdep;
+	}
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+	public void setNumdep(String numdep) {
+		this.numdep = numdep;
+	}
 
-    public String getPis() {
-        return pis;
-    }
+	public String getCpf() {
+		return cpf;
+	}
 
-    public void setPis(String pis) {
-        this.pis = pis;
-    }
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 
-    public String getNumrg() {
-        return numrg;
-    }
+	public String getPis() {
+		return pis;
+	}
 
-    public void setNumrg(String numrg) {
-        this.numrg = numrg;
-    }
+	public void setPis(String pis) {
+		this.pis = pis;
+	}
 
-    public String getOrgrg() {
-        return orgrg;
-    }
+	public String getNumrg() {
+		return numrg;
+	}
 
-    public void setOrgrg(String orgrg) {
-        this.orgrg = orgrg;
-    }
+	public void setNumrg(String numrg) {
+		this.numrg = numrg;
+	}
 
-    public String getMae() {
-        return mae;
-    }
+	public String getOrgrg() {
+		return orgrg;
+	}
 
-    public void setMae(String mae) {
-        this.mae = mae;
-    }
-    
-    @Override
-    public String toString() {
-        //return "Funcionario{" + "cpf=" + cpf + ", pis=" + pis + ", nome=" + nome + ", nasc=" + nasc + '}';
-        return cpf + ";" + pis + ";" + nome + ";" + sdf.format(nasc);
-    }
+	public void setOrgrg(String orgrg) {
+		this.orgrg = orgrg;
+	}
 
-    private String clear(String cpf) {
-        return (cpf != null ? cpf.trim() : "")
-               .replace(".", "").replace("-", "").replace("/", "");
-    }
+	public String getMae() {
+		return mae;
+	}
+
+	public void setMae(String mae) {
+		this.mae = mae;
+	}
+
+	@Override
+	public String toString() {
+		// return "Funcionario{" + "cpf=" + cpf + ", pis=" + pis + ", nome=" + nome + ",
+		// nasc=" + nasc + '}';
+		return cpf + ";" + pis + ";" + nome + ";" + sdf.format(nasc);
+	}
+
+	private String clear(String cpf) {
+		return (cpf != null ? cpf.trim() : "").replace(".", "").replace("-", "").replace("/", "");
+	}
+
+	public String getEnderecoCompleto() {
+		StringBuilder sb = new StringBuilder();
+		if (this.endereco != null && !endereco.trim().equals("")) {
+			sb.append(this.endereco);
+		}
+
+		if (this.numero != null && !numero.trim().equals("")) {
+			if (sb.length() > 0) {
+				sb.append(", nº ");
+			}
+			sb.append(this.numero);
+		}
+
+		if (this.comple != null && !comple.trim().equals("")) {
+			if (sb.length() > 0) {
+				sb.append(", ");
+			}
+			sb.append(this.comple);
+		}
+
+		if (this.cid != null && !cid.trim().equals("")) {
+			if (sb.length() > 0) {
+				sb.append(", ");
+			}
+			sb.append(this.cid);
+		}
+
+		if (this.uf != null && !uf.trim().equals("")) {
+			if (sb.length() > 0) {
+				sb.append("/");
+			}
+			sb.append(this.uf);
+		}
+
+		if (this.cep != null && !cep.trim().equals("")) {
+			if (sb.length() > 0) {
+				sb.append(", CEP ");
+			}
+			sb.append(this.cep);
+		}
+
+		return sb.toString();
+	}
 }
