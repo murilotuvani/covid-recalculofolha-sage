@@ -3,3 +3,5 @@ relatorio.xlsx
 .project
 .classpath
 .settings
+*.pdf
+*.xlsx

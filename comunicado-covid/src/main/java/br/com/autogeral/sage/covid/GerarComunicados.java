@@ -18,6 +18,9 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -35,7 +38,7 @@ public class GerarComunicados {
 					Map<Integer, Salario> salarios = i.buscarSalarios(empresa, f);
 
 					XSSFWorkbook workbook = new XSSFWorkbook();
-					XSSFSheet funcionarios = workbook.createSheet("Salarios");
+					i.criarPlanilhaSalarios(workbook, salarios);
 //			XSSFSheet dependentes = workbook.createSheet("Dependentes");
 
 					String nome = f.getNome().replace(" ", "").trim();
@@ -65,19 +68,19 @@ public class GerarComunicados {
 		Empresa empresa1 = new Empresa();
 		empresa1.setCodigo(1);
 		empresa1.setNome("Empresa Importadora de Carros Foda LTDA");
-		empresa1.setCidade("São Paulo");
+		empresa1.setCidade("Sao Paulo");
 		empresa1.setCnpj("00.000.002/0002-99");
-		empresa1.setEndereco("Av. Colômbia, 999 - São Paulo/SP");
-		empresa1.setRepresentanteNome("Milionário");
+		empresa1.setEndereco("Av. Colombia, 999 - São Paulo/SP");
+		empresa1.setRepresentanteNome("Milionario");
 		empresa1.setRepresentanteCpf("111.111.111-11");
 
 		Empresa empresa2 = new Empresa();
 		empresa2.setCodigo(2);
 		empresa2.setNome("Empresa Brasileira de Chopp");
-		empresa2.setCidade("Petrópolis");
+		empresa2.setCidade("Petropolis");
 		empresa2.setCnpj("00.000.001/0002-99");
 		empresa2.setEndereco("Perto de Dom Pedro II");
-		empresa2.setRepresentanteNome("Bilionário");
+		empresa2.setRepresentanteNome("Bilionario");
 		empresa2.setRepresentanteCpf("444.444.444-88");
 
 		return Arrays.asList(empresa1, empresa2);
@@ -87,11 +90,14 @@ public class GerarComunicados {
 		NumberFormat nf = NumberFormat.getIntegerInstance();
 		nf.setMinimumIntegerDigits(4);
 		nf.setMaximumIntegerDigits(4);
+		nf.setGroupingUsed(false);
 		String bd = "f" + nf.format(empresa.getCodigo());
 		String query = "Select A.codfun, A.nome, A.funcao, A.endereco, A.numero, A.comple, A.bairro, A.cid, A.uf\n"
 				+ "     , A.telefone, A.cep, A.nasc, A.sexo, A.ecivil, A.email, A.depto, A.cbo\n"
-				+ "     , A.numdep, A.cpf, A.pis, A.numrg, A.orgrg, A.mae\n" + "  From " + bd + ".func As A\n"
+				+ "     , A.numdep, A.cpf, A.pis, A.numrg, A.orgrg, A.mae\n"
+				+ "  From " + bd + ".func As A\n"
 				+ " Where A.sit='f';";
+		System.out.println(query);
 		Map<Long, Funcionario> map;
 		try (Connection conn = ConnectionFactory.getConnection();
 				Statement stmt = conn.createStatement();
@@ -160,6 +166,7 @@ public class GerarComunicados {
 
 	private Map<Integer, Salario> buscarSalarios(Empresa empresa, Funcionario f) throws SQLException {
 		NumberFormat nf = NumberFormat.getIntegerInstance();
+		nf.setGroupingUsed(false);
 		nf.setMinimumIntegerDigits(4);
 		nf.setMaximumIntegerDigits(4);
 		String bd = "f" + nf.format(empresa.getCodigo());
@@ -193,16 +200,16 @@ public class GerarComunicados {
 
 	private void preeche(Funcionario f, ResultSet rs) throws SQLException {
 		f.setCodfun(rs.getLong("codfun"));
-		f.setNome(rs.getString("nome"));
-		f.setFuncao(rs.getString("funcao"));
-		f.setEndereco(rs.getString("endereco"));
-		f.setNumero(rs.getString("numero"));
-		f.setComple(rs.getString("comple"));
-		f.setBairro(rs.getString("bairro"));
-		f.setCid(rs.getString("cid"));
-		f.setUf(rs.getString("uf"));
-		f.setTelefone(rs.getString("telefone"));
-		f.setCep(rs.getString("cep"));
+		f.setNome(rs.getString("nome").trim());
+		f.setFuncao(rs.getString("funcao").trim());
+		f.setEndereco(rs.getString("endereco").trim());
+		f.setNumero(rs.getString("numero").trim());
+		f.setComple(rs.getString("comple".trim()));
+		f.setBairro(rs.getString("bairro").trim());
+		f.setCid(rs.getString("cid").trim());
+		f.setUf(rs.getString("uf").trim());
+		f.setTelefone(rs.getString("telefone").trim());
+		f.setCep(rs.getString("cep").trim());
 		Date nasc = rs.getDate("nasc");
 		f.setNasc(nasc);
 		f.setSexo(rs.getString("sexo"));
@@ -211,21 +218,21 @@ public class GerarComunicados {
 		f.setDepto(rs.getString("depto"));
 		f.setCbo(rs.getString("cbo"));
 		f.setNumdep(rs.getString("numdep"));
-		f.setCpf(rs.getString("cpf"));
+		f.setCpf(rs.getString("cpf").trim());
 		f.setPis(rs.getString("pis"));
-		f.setNumrg(rs.getString("numrg"));
-		f.setOrgrg(rs.getString("orgrg"));
-		f.setMae(rs.getString("mae"));
+		f.setNumrg(rs.getString("numrg").trim());
+		f.setOrgrg(rs.getString("orgrg".trim()));
+		f.setMae(rs.getString("mae").trim());
 	}
 
 	private void preeche(Dependente d, ResultSet rs) throws SQLException {
 		d.setCodfun(rs.getLong("codfun"));
 		d.setOrdem(rs.getInt("ordem"));
-		d.setNome(rs.getString("nome"));
+		d.setNome(rs.getString("nome").trim());
 		Date nasc = rs.getDate("datanasc");
 		d.setDatanasc(nasc);
-		d.setParentesco(rs.getString("parentesco"));
-		d.setNomemae(rs.getString("nomemae"));
+		d.setParentesco(rs.getString("parentesco").trim());
+		d.setNomemae(rs.getString("nomemae").trim());
 	}
 
 	private void preenche(Salario s, ResultSet rs) throws SQLException {
@@ -234,6 +241,30 @@ public class GerarComunicados {
 		s.setCodeven(rs.getInt("codeven"));
 		s.setValor(rs.getBigDecimal("valor"));
 
+	}
+	
+	public void criarPlanilhaSalarios(XSSFWorkbook workbook, Map<Integer, Salario> salarios) {
+		XSSFSheet sheet = workbook.createSheet("Salarios");
+		
+		int rowNum = 0;
+		XSSFRow row = sheet.createRow(rowNum++);		
+		XSSFCell cell = row.createCell(0);
+		cell.setCellValue("Mes");
+		cell = row.createCell(1);
+		cell.setCellValue("Salario");
+		
+		for(Integer mes:salarios.keySet()) {
+			Salario salario = salarios.get(mes);
+			row = sheet.createRow(rowNum++);
+			cell = row.createCell(0);
+			cell.setCellType(CellType.NUMERIC);
+			cell.setCellValue(mes);
+			
+			cell = row.createCell(1);
+			cell.setCellType(CellType.NUMERIC);
+			cell.setCellValue(salario.getValor().doubleValue());
+			
+		}
 	}
 
 }
