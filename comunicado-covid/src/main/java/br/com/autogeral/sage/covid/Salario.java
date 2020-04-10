@@ -8,6 +8,17 @@ public class Salario {
 	private long codfun;
 	private int anoMes;
 	private BigDecimal valor = BigDecimal.ZERO;
+	
+	public Salario() {
+		
+	}
+	
+	public Salario(int evento, int codigoFuncionario, int anoMes, BigDecimal valor)  {
+		this.codeven = evento;
+		this.codfun = codigoFuncionario;
+		this.anoMes = anoMes;
+		this.valor = valor;
+	}
 
 	public int getCodeven() {
 		return codeven;
