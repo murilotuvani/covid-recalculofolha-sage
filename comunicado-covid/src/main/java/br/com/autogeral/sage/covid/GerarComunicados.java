@@ -3,6 +3,7 @@ package br.com.autogeral.sage.covid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -257,6 +258,8 @@ public class GerarComunicados {
 		cell = row.createCell(1);
 		cell.setCellValue("Salario");
 		
+		BigDecimal soma = BigDecimal.ZERO;
+		
 		for(Integer mes:salarios.keySet()) {
 			Salario salario = salarios.get(mes);
 			row = sheet.createRow(rowNum++);
@@ -267,6 +270,7 @@ public class GerarComunicados {
 			cell = row.createCell(1);
 			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(salario.getValor().doubleValue());
+			
 			
 		}
 	}
