@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,25 +64,30 @@ public class GerarComunicados {
 	}
 
 	private List<Empresa> getEmpresas() {
-		Empresa empresa1 = new Empresa();
-		empresa1.setCodigo(1);
-		empresa1.setNome("Empresa Importadora de Carros Foda LTDA");
-		empresa1.setCidade("Sao Paulo");
-		empresa1.setCnpj("00.000.002/0002-99");
-		empresa1.setEndereco("Av. Colombia, 999 - São Paulo/SP");
-		empresa1.setRepresentanteNome("Milionario");
-		empresa1.setRepresentanteCpf("111.111.111-11");
+		List<Empresa> empresas = new ArrayList<>();
+		Empresa emp = new Empresa();
 
-		Empresa empresa2 = new Empresa();
-		empresa2.setCodigo(2);
-		empresa2.setNome("Empresa Brasileira de Chopp");
-		empresa2.setCidade("Petropolis");
-		empresa2.setCnpj("00.000.001/0002-99");
-		empresa2.setEndereco("Perto de Dom Pedro II");
-		empresa2.setRepresentanteNome("Bilionario");
-		empresa2.setRepresentanteCpf("444.444.444-88");
+		String args[][] = new String[][] { { "1", "05.437.537/0001-37", "Av. Dr. Octaviano Pereira Mendes, 1333 - Itu/SP", "Itu" },
+				{ "2", "05.437.537/0002-18", "Av. Dom Pedro II, 1090 - Salto/SP", "Salto" },
+				{ "3", "05.437.537/0003-07", "Av. Dr. Armando Pannunzio, 225 - Sorocaba/SP", "Sorocaba" },
+				{ "4", "05.437.537/0004-80", "Av. Caetano Ruggieri, 3000 - Itu/SP", "Itu" },
+				{ "5", "05.437.537/0005-60", "Av. Francisco de Paula Leite, 160 - Indaiatuba/SP", "Indaiatuba" },
+				{ "6", "05.437.537/0006-41", "Av. Dr. Antonio Pires de Almeida, 630 - Porto Feliz/SP", "Porto Feliz" },
+				{ "8", "05.437.537/0008-03", "Rua Amazonas, 137 - Cabreúva/SP", "Cabreúva" },
+				{ "9", "05.437.537/0009-94", "Rua Onze de Agosto, 1815 - Tatuí/SP", "Tatuí" } };
+		for(int i=0;i<9;i++) {
+			emp.setCodigo(Integer.parseInt(args[i][0]));
+			emp.setNome("Auto Geral Autopeças LTDA");
+			emp.setCnpj(args[i][1]);
+			emp.setEndereco(args[i][2]);
+			emp.setCidade(args[i][3]);
+			emp.setRepresentanteNome("Murilo de Moraes Tuvani");
+			emp.setRepresentanteCpf("279.339.928-03");
+			empresas.add(emp);
+		}
+		
 
-		return Arrays.asList(empresa1, empresa2);
+		return empresas;
 	}
 
 	private Map<Long, Funcionario> buscarFuncionarios(Empresa empresa) throws SQLException {

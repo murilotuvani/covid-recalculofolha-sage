@@ -1,0 +1,14 @@
+package br.com.autogeral.sage.covid;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class CalculoSalarioTest {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}
