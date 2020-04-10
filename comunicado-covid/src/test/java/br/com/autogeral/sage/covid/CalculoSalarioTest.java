@@ -43,8 +43,25 @@ public class CalculoSalarioTest {
 		assertEquals(media, cs.getMedia());
 		assertEquals(2, cs.getFaixa());
 		assertTrue(BigDecimal.valueOf(1312.5).compareTo(cs.getSalarioEmpresa()) == 0);
-		assertTrue(BigDecimal.valueOf(338.73).compareTo(cs.getSalarioGoverno()) == 0);
+		assertTrue(BigDecimal.valueOf(338.72).compareTo(cs.getSalarioGoverno()) == 0);
 		assertTrue(BigDecimal.valueOf(1651.22).compareTo(cs.getSalarioTotal()) == 0);
+
+	}
+	
+	@Test
+	public void testCalculoFaixa3() {
+		Map<Integer, Salario> mapa = new TreeMap<>();
+		mapa.put(202003, new Salario(0, 245, 202003, new BigDecimal(3200)));
+
+		BigDecimal reducao = BigDecimal.valueOf(25);
+		CalculoSalario cs = new CalculoSalario(reducao, mapa);
+
+		BigDecimal media = BigDecimal.valueOf(3200).setScale(2, RoundingMode.HALF_UP);
+		assertEquals(media, cs.getMedia());
+		assertEquals(3, cs.getFaixa());
+		assertTrue(BigDecimal.valueOf(2400).compareTo(cs.getSalarioEmpresa()) == 0);
+		assertTrue(BigDecimal.valueOf(453.26).compareTo(cs.getSalarioGoverno()) == 0);
+		assertTrue(BigDecimal.valueOf(2853.26).compareTo(cs.getSalarioTotal()) == 0);
 
 	}
 

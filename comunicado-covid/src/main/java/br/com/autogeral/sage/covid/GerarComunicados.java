@@ -28,6 +28,7 @@ public class GerarComunicados {
 
 	public static void main(String a[]) {
 		try {
+			BigDecimal reducao = BigDecimal.valueOf(Double.valueOf(System.getProperty("reducao", "25")));
 			ContratoGerador cg = new ContratoGerador();
 			GerarComunicados i = new GerarComunicados();
 			for (Empresa empresa : i.getEmpresas()) {
@@ -37,8 +38,9 @@ public class GerarComunicados {
 				for (Funcionario f : fs.values()) {
 					Map<Integer, Salario> salarios = i.buscarSalarios(empresa, f);
 
+					CalculoSalario calculoSalario = new CalculoSalario(reducao, salarios);
 					XSSFWorkbook workbook = new XSSFWorkbook();
-					i.criarPlanilhaSalarios(workbook, salarios);
+					i.criarPlanilhaSalarios(workbook, calculoSalario);
 //			XSSFSheet dependentes = workbook.createSheet("Dependentes");
 
 					String nome = f.getNome().replace(" ", "").trim();
@@ -46,8 +48,7 @@ public class GerarComunicados {
 					try (FileOutputStream fos = new FileOutputStream(file)) {
 						workbook.write(fos);
 						fos.flush();
-					}
-					
+					}					
 					
 					file = new File(nome + ".pdf");
 					Contrato ctr = new Contrato();
@@ -248,7 +249,7 @@ public class GerarComunicados {
 
 	}
 	
-	public void criarPlanilhaSalarios(XSSFWorkbook workbook, Map<Integer, Salario> salarios) {
+	public void criarPlanilhaSalarios(XSSFWorkbook workbook, CalculoSalario calculoSalario) {
 		XSSFSheet sheet = workbook.createSheet("Salarios");
 		
 		int rowNum = 0;
@@ -259,6 +260,7 @@ public class GerarComunicados {
 		cell.setCellValue("Salario");
 		
 		BigDecimal soma = BigDecimal.ZERO;
+		Map<Integer, Salario> salarios = calculoSalario.getSalarios();
 		
 		for(Integer mes:salarios.keySet()) {
 			Salario salario = salarios.get(mes);
@@ -270,9 +272,20 @@ public class GerarComunicados {
 			cell = row.createCell(1);
 			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(salario.getValor().doubleValue());
-			
-			
 		}
+		
+		criaLinha(sheet.createRow(rowNum++), "Salário Empresa : ", calculoSalario.getSalarioEmpresa());
+		criaLinha(sheet.createRow(rowNum++), "Salário Governo : ", calculoSalario.getSalarioGoverno());
+		criaLinha(sheet.createRow(rowNum++), "Salário Total   : ", calculoSalario.getSalarioTotal());
+	}
+
+	private void criaLinha(XSSFRow row, String string, BigDecimal valor) {
+		XSSFCell cell = row.createCell(0);
+		cell.setCellValue(string);
+		cell.setCellType(CellType.STRING);
+		cell = row.createCell(1);
+		cell.setCellType(CellType.NUMERIC);
+		cell.setCellValue(valor.doubleValue());
 	}
 
 }

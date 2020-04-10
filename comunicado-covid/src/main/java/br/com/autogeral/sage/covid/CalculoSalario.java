@@ -39,8 +39,11 @@ public class CalculoSalario {
 		} else if (this.media.compareTo(LIMITE_FAIXA_2) <= 0) {
 			this.faixa = 2;
 			BigDecimal valorLimite = BigDecimal.valueOf(1599.61);
-			BigDecimal diferenca = this.salarioEmpresa.subtract(valorLimite);
-			BigDecimal ajuda = diferenca.multiply(BigDecimal.valueOf(0.5)).add(BigDecimal.valueOf(1279.69)).multiply(fatorReducao); 
+			BigDecimal diferenca = this.media.subtract(valorLimite);
+			BigDecimal ajuda = diferenca.multiply(BigDecimal.valueOf(0.5))
+					.add(BigDecimal.valueOf(1279.69))
+					.multiply(fatorReducao)
+					.setScale(2, RoundingMode.HALF_UP);; 
 			this.salarioGoverno = ajuda;
 		} else {
 			this.faixa = 3;
