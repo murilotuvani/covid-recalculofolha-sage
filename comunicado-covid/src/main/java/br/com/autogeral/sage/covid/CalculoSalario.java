@@ -7,6 +7,7 @@ import java.util.Map;
 public class CalculoSalario {
 
 	private int faixa = 0;
+	private Funcionario funcionario;
 	private BigDecimal salarioEmpresa = BigDecimal.ZERO;
 	private BigDecimal salarioGoverno = BigDecimal.ZERO;
 	private Map<Integer, Salario> salarios;
@@ -17,8 +18,9 @@ public class CalculoSalario {
 	private static final BigDecimal LIMITE_FAIXA_1 = BigDecimal.valueOf(1500);
 	private static final BigDecimal LIMITE_FAIXA_2 = BigDecimal.valueOf(2666.29);
 
-	public CalculoSalario(BigDecimal reducao, Map<Integer, Salario> salarios) {
+	public CalculoSalario(BigDecimal reducao, Funcionario funcionario, Map<Integer, Salario> salarios) {
 		this.reducao = reducao;
+		this.funcionario = funcionario;
 		this.fatorReducao = reducao.divide(BigDecimal.valueOf(100));
 		this.salarios = salarios;
 		calcula();
@@ -27,6 +29,9 @@ public class CalculoSalario {
 	private void calcula() {
 //		for(salarios.keySet())
 		BigDecimal soma = salarios.values().stream().map(s -> s.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
+		if(funcionario.isAdicionalPericulosidade()) {
+			soma = soma.multiply(BigDecimal.valueOf(1.3));
+		}
 		BigDecimal divisor = new BigDecimal(salarios.keySet().size());
 		//this.media  = soma.divide(divisor, RoundingMode.HALF_UP);
 		

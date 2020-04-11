@@ -14,6 +14,7 @@ public class CalculoSalarioTest {
 
 	@Test
 	public void testCalculoMedia() {
+		Funcionario f = new Funcionario();
 
 		Map<Integer, Salario> mapa = new TreeMap<>();
 		mapa.put(202003, new Salario(0, 245, 202003, new BigDecimal(2545)));
@@ -23,9 +24,26 @@ public class CalculoSalarioTest {
 		mapa.put(202911, new Salario(0, 245, 202911, new BigDecimal(2200)));
 
 		BigDecimal reducao = BigDecimal.valueOf(25);
-		CalculoSalario cs = new CalculoSalario(reducao, mapa);
+		CalculoSalario cs = new CalculoSalario(reducao, f, mapa);
 
 		BigDecimal media = BigDecimal.valueOf(2425.2).setScale(2, RoundingMode.HALF_UP);
+		assertEquals(media, cs.getMedia());
+		assertEquals(2, cs.getFaixa());
+
+	}
+	
+	@Test
+	public void testCalculoMediaComAdicionalPericulosidade() {
+		Funcionario f = new Funcionario();
+		f.setAdicionalPericulosidade(true);
+
+		Map<Integer, Salario> mapa = new TreeMap<>();
+		mapa.put(202003, new Salario(0, 245, 202003, new BigDecimal(1500)));
+
+		BigDecimal reducao = BigDecimal.valueOf(25);
+		CalculoSalario cs = new CalculoSalario(reducao, f, mapa);
+
+		BigDecimal media = BigDecimal.valueOf(1950).setScale(2, RoundingMode.HALF_UP);
 		assertEquals(media, cs.getMedia());
 		assertEquals(2, cs.getFaixa());
 
@@ -33,11 +51,13 @@ public class CalculoSalarioTest {
 
 	@Test
 	public void testCalculoFaixa2() {
+		Funcionario f = new Funcionario();
+		
 		Map<Integer, Salario> mapa = new TreeMap<>();
 		mapa.put(202003, new Salario(0, 245, 202003, new BigDecimal(1750)));
 
 		BigDecimal reducao = BigDecimal.valueOf(25);
-		CalculoSalario cs = new CalculoSalario(reducao, mapa);
+		CalculoSalario cs = new CalculoSalario(reducao, f, mapa);
 
 		BigDecimal media = BigDecimal.valueOf(1750).setScale(2, RoundingMode.HALF_UP);
 		assertEquals(media, cs.getMedia());
@@ -50,11 +70,12 @@ public class CalculoSalarioTest {
 	
 	@Test
 	public void testCalculoFaixa3() {
+		Funcionario f = new Funcionario();
 		Map<Integer, Salario> mapa = new TreeMap<>();
 		mapa.put(202003, new Salario(0, 245, 202003, new BigDecimal(3200)));
 
 		BigDecimal reducao = BigDecimal.valueOf(25);
-		CalculoSalario cs = new CalculoSalario(reducao, mapa);
+		CalculoSalario cs = new CalculoSalario(reducao, f, mapa);
 
 		BigDecimal media = BigDecimal.valueOf(3200).setScale(2, RoundingMode.HALF_UP);
 		assertEquals(media, cs.getMedia());

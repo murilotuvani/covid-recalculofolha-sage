@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,15 +36,15 @@ public class GerarComunicados {
 			for (Empresa empresa : i.getEmpresas()) {
 				System.out.println("Comunicados da empresa : " + empresa);
 				Map<Long, Funcionario> fs = i.buscarFuncionarios(empresa);
-//			Map<Long, List<Dependente>> ds = i.buscarDependententes(fs);
-//			Map<Long, Map<Integer, Salario>> mapaSalarios = i.buscarSalarios(fs);
+				Set<Long> funcionariosPericulosidade = i.buscaFuncionariosComAdicionalPericulosiade(empresa);
+
 				for (Funcionario f : fs.values()) {
 					Map<Integer, Salario> salarios = i.buscarSalarios(empresa, f);
+					f.setAdicionalPericulosidade(funcionariosPericulosidade.contains(f.getCodfun()));
 
-					CalculoSalario calculoSalario = new CalculoSalario(reducao, salarios);
+					CalculoSalario calculoSalario = new CalculoSalario(reducao, f, salarios);
 					XSSFWorkbook workbook = new XSSFWorkbook();
 					i.criarPlanilhaSalarios(workbook, calculoSalario);
-//			XSSFSheet dependentes = workbook.createSheet("Dependentes");
 
 					String nome = f.getNome().replace(" ", "").trim();
 					File file = new File(nome + ".xlsx");
@@ -79,7 +81,7 @@ public class GerarComunicados {
 		for(int i=0;i<args.length;i++) {
 			Empresa emp = new Empresa();
 			emp.setCodigo(Integer.parseInt(args[i][0]));
-			emp.setNome("Auto Geral Autopeças LTDA");
+			emp.setNome("Auto Geral Autopeï¿½as LTDA");
 			emp.setCnpj(args[i][1]);
 			emp.setEndereco(args[i][2]);
 			emp.setCidade(args[i][3]);
@@ -116,6 +118,29 @@ public class GerarComunicados {
 			}
 		}
 		return map;
+	}
+	
+	private Set<Long> buscaFuncionariosComAdicionalPericulosiade(Empresa empresa) throws SQLException {
+		NumberFormat nf = NumberFormat.getIntegerInstance();
+		nf.setMinimumIntegerDigits(4);
+		nf.setMaximumIntegerDigits(4);
+		nf.setGroupingUsed(false);
+		String bd = "f" + nf.format(empresa.getCodigo());
+
+		String query = "select f.codfun\n"
+		             + "  from " + bd + ".holerith h\n"
+				     + " where h.codeven='4910'\n"
+				     + "   and h.anomes='202003'";
+		Set<Long> codFuns = new TreeSet<>();
+		try (Connection conn = ConnectionFactory.getConnection();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(query)) {
+			while (rs.next()) {
+				codFuns.add(rs.getLong("codfun"));
+			}
+		}
+		
+		return codFuns;
 	}
 
 	private Map<Long, List<Dependente>> buscarDependententes(Map<Long, Funcionario> fs) throws SQLException {
@@ -259,7 +284,6 @@ public class GerarComunicados {
 		cell = row.createCell(1);
 		cell.setCellValue("Salario");
 		
-		BigDecimal soma = BigDecimal.ZERO;
 		Map<Integer, Salario> salarios = calculoSalario.getSalarios();
 		
 		for(Integer mes:salarios.keySet()) {
@@ -273,14 +297,14 @@ public class GerarComunicados {
 			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(salario.getValor().doubleValue());
 		}
-		criaLinha(sheet.createRow(rowNum++), "Salário Médio : ", calculoSalario.getMedia());
+		criaLinha(sheet.createRow(rowNum++), "Salï¿½rio Mï¿½dio : ", calculoSalario.getMedia());
 		
 		rowNum++;
 		
 		criaLinha(sheet.createRow(rowNum++), "Faixa : ", calculoSalario.getFaixa());
-		criaLinha(sheet.createRow(rowNum++), "Salário Empresa : ", calculoSalario.getSalarioEmpresa());
-		criaLinha(sheet.createRow(rowNum++), "Salário Governo : ", calculoSalario.getSalarioGoverno());
-		criaLinha(sheet.createRow(rowNum++), "Salário Total   : ", calculoSalario.getSalarioTotal());
+		criaLinha(sheet.createRow(rowNum++), "Salï¿½rio Empresa : ", calculoSalario.getSalarioEmpresa());
+		criaLinha(sheet.createRow(rowNum++), "Salï¿½rio Governo : ", calculoSalario.getSalarioGoverno());
+		criaLinha(sheet.createRow(rowNum++), "Salï¿½rio Total   : ", calculoSalario.getSalarioTotal());
 	}
 
 	private void criaLinha(XSSFRow row, String string, int valor) {

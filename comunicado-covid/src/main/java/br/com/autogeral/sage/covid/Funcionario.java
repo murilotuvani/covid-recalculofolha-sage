@@ -30,6 +30,7 @@ public class Funcionario {
 	private String numrg = null;
 	private String orgrg = null;
 	private String mae = null;
+	private boolean adicionalPericulosidade = false;
 
 	public Funcionario() {
 
@@ -230,6 +231,14 @@ public class Funcionario {
 	public void setMae(String mae) {
 		this.mae = mae;
 	}
+	
+	public boolean isAdicionalPericulosidade() {
+		return adicionalPericulosidade;
+	}
+
+	public void setAdicionalPericulosidade(boolean adicional) {
+		this.adicionalPericulosidade = adicional;
+	}
 
 	@Override
 	public String toString() {
@@ -250,7 +259,7 @@ public class Funcionario {
 
 		if (this.numero != null && !numero.trim().equals("")) {
 			if (sb.length() > 0) {
-				sb.append(", nº ");
+				sb.append(", nï¿½ ");
 			}
 			sb.append(this.numero);
 		}
@@ -285,4 +294,5 @@ public class Funcionario {
 
 		return sb.toString();
 	}
+
 }
