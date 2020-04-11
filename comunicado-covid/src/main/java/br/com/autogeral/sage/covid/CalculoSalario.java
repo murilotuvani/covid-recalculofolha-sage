@@ -29,7 +29,9 @@ public class CalculoSalario {
 		BigDecimal soma = salarios.values().stream().map(s -> s.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
 		BigDecimal divisor = new BigDecimal(salarios.keySet().size());
 		//this.media  = soma.divide(divisor, RoundingMode.HALF_UP);
-		this.media = soma.divide(divisor).setScale(2, RoundingMode.HALF_UP);
+		
+		this.media = soma.divide(divisor, 2, RoundingMode.HALF_UP);
+		//this.media.setScale(2, RoundingMode.HALF_UP);
 		this.salarioEmpresa = this.media.multiply(BigDecimal.ONE.subtract(fatorReducao));
 		if (this.media.compareTo(LIMITE_FAIXA_1) <= 0) {
 			this.faixa = 1;

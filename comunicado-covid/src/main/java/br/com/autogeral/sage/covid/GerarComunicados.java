@@ -32,6 +32,7 @@ public class GerarComunicados {
 			ContratoGerador cg = new ContratoGerador();
 			GerarComunicados i = new GerarComunicados();
 			for (Empresa empresa : i.getEmpresas()) {
+				System.out.println("Comunicados da empresa : " + empresa);
 				Map<Long, Funcionario> fs = i.buscarFuncionarios(empresa);
 //			Map<Long, List<Dependente>> ds = i.buscarDependententes(fs);
 //			Map<Long, Map<Integer, Salario>> mapaSalarios = i.buscarSalarios(fs);
@@ -67,8 +68,6 @@ public class GerarComunicados {
 
 	private List<Empresa> getEmpresas() {
 		List<Empresa> empresas = new ArrayList<>();
-		Empresa emp = new Empresa();
-
 		String args[][] = new String[][] { { "1", "05.437.537/0001-37", "Av. Dr. Octaviano Pereira Mendes, 1333 - Itu/SP", "Itu" },
 				{ "2", "05.437.537/0002-18", "Av. Dom Pedro II, 1090 - Salto/SP", "Salto" },
 				{ "3", "05.437.537/0003-07", "Av. Dr. Armando Pannunzio, 225 - Sorocaba/SP", "Sorocaba" },
@@ -77,9 +76,10 @@ public class GerarComunicados {
 				{ "6", "05.437.537/0006-41", "Av. Dr. Antonio Pires de Almeida, 630 - Porto Feliz/SP", "Porto Feliz" },
 				{ "8", "05.437.537/0008-03", "Rua Amazonas, 137 - Cabre√∫va/SP", "Cabre√∫va" },
 				{ "9", "05.437.537/0009-94", "Rua Onze de Agosto, 1815 - Tatu√≠/SP", "Tatu√≠" } };
-		for(int i=0;i<9;i++) {
+		for(int i=0;i<args.length;i++) {
+			Empresa emp = new Empresa();
 			emp.setCodigo(Integer.parseInt(args[i][0]));
-			emp.setNome("Auto Geral Autope√ßas LTDA");
+			emp.setNome("Auto Geral AutopeÁas LTDA");
 			emp.setCnpj(args[i][1]);
 			emp.setEndereco(args[i][2]);
 			emp.setCidade(args[i][3]);
@@ -273,10 +273,23 @@ public class GerarComunicados {
 			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(salario.getValor().doubleValue());
 		}
+		criaLinha(sheet.createRow(rowNum++), "Sal·rio MÈdio : ", calculoSalario.getMedia());
 		
-		criaLinha(sheet.createRow(rowNum++), "Sal√°rio Empresa : ", calculoSalario.getSalarioEmpresa());
-		criaLinha(sheet.createRow(rowNum++), "Sal√°rio Governo : ", calculoSalario.getSalarioGoverno());
-		criaLinha(sheet.createRow(rowNum++), "Sal√°rio Total   : ", calculoSalario.getSalarioTotal());
+		rowNum++;
+		
+		criaLinha(sheet.createRow(rowNum++), "Faixa : ", calculoSalario.getFaixa());
+		criaLinha(sheet.createRow(rowNum++), "Sal·rio Empresa : ", calculoSalario.getSalarioEmpresa());
+		criaLinha(sheet.createRow(rowNum++), "Sal·rio Governo : ", calculoSalario.getSalarioGoverno());
+		criaLinha(sheet.createRow(rowNum++), "Sal·rio Total   : ", calculoSalario.getSalarioTotal());
+	}
+
+	private void criaLinha(XSSFRow row, String string, int valor) {
+		XSSFCell cell = row.createCell(0);
+		cell.setCellValue(string);
+		cell.setCellType(CellType.STRING);
+		cell = row.createCell(1);
+		cell.setCellType(CellType.NUMERIC);
+		cell.setCellValue(valor);
 	}
 
 	private void criaLinha(XSSFRow row, String string, BigDecimal valor) {

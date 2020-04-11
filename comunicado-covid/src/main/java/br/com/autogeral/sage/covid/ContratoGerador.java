@@ -18,42 +18,13 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import br.com.autogeral.util.StringUtil;
+
 public class ContratoGerador {
 
 	public static final Font FONT_NORMAL = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK);
 	public static final Font FONT_BOLD = new Font(FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
 	public static final Font FONT_ITALIC = new Font(FontFamily.HELVETICA, 12, Font.ITALIC, BaseColor.BLACK);
-
-	public static void main(String[] args) {
-		File file = new File("contrato.pdf");
-		Funcionario func = new Funcionario();
-		func.setNome("Murlo de Moraes Tuvani");
-		func.setCpf("279.339.928-03");
-		func.setCep("13.301-999");
-		func.setEndereco("Rua Marechal Deodoro");
-		func.setNumero("550");
-		func.setComple("Apartamento 132");
-		func.setBairro("Centro");
-		func.setCid("Itu");
-		func.setUf("SP");
-
-		Empresa emp = new Empresa();
-		emp.setNome("Auto Geral Autopeças LTDA");
-		emp.setCnpj("05.437.537/0001-37");
-		emp.setEndereco("Av. Dr. Octaviano Pereira Mends, 1333 - Itu/SP");
-		emp.setCidade("Itu");
-		emp.setRepresentanteCpf("279.339.928-03");
-		emp.setRepresentanteNome("João Maria José");
-		emp.setCodigo(1);
-
-		Contrato ctr = new Contrato();
-		ctr.setDias(90);
-		ctr.setFuncionario(func);
-		ctr.setEmpresa(emp);
-
-		ContratoGerador cg = new ContratoGerador();
-		cg.gerar(ctr, file);
-	}
 
 	void gerar(Contrato ctr, File file) {
 		try {
@@ -74,10 +45,10 @@ public class ContratoGerador {
 
 			// Centered
 			paragraph = new Paragraph();
-			Chunk chunk = new Chunk("EMPREGADORA:", FONT_BOLD);
+			Chunk chunk = new Chunk("EMPREGADORA: ", FONT_BOLD);
 			paragraph.add(chunk);
 
-			String texto = ctr.getEmpresa().getNome() + ", CNPJ nº" + ctr.getEmpresa().getCnpj() + ", "
+			String texto = ctr.getEmpresa().getNome() + ", CNPJ nº " + ctr.getEmpresa().getCnpj() + ", "
 					+ ctr.getEmpresa().getEndereco() + ", neste ato representada por "
 					+ ctr.getEmpresa().getRepresentanteNome() + ", CPF nº " + ctr.getEmpresa().getRepresentanteCpf();
 			chunk = new Chunk(texto, FONT_NORMAL);
@@ -89,7 +60,8 @@ public class ContratoGerador {
 			chunk = new Chunk("EMPREGADO(A): ", FONT_BOLD);
 			paragraph.add(chunk);
 
-			texto = ctr.getFuncionario().getNome() + ", CPF nº " + ctr.getFuncionario().getCpf() + ", endereço "
+			String nome = StringUtil.soPrimeiraMaiuscula(ctr.getFuncionario().getNome());
+			texto = nome + ", CPF nº " + ctr.getFuncionario().getCpf() + ", endereço "
 					+ ctr.getFuncionario().getEnderecoCompleto();
 
 			chunk = new Chunk(texto, FONT_NORMAL);
@@ -297,7 +269,7 @@ public class ContratoGerador {
 
 			table.addCell(createCell("Fruncionário(a):"));
 			table.addCell(createCell(""));
-			table.addCell(createCell("Empregador(a):"));
+			table.addCell(createCell("Empregadora:"));
 
 			PdfPCell cell = createCell("");
 			cell.setBorder(Rectangle.BOTTOM);
@@ -309,7 +281,7 @@ public class ContratoGerador {
 			cell.setBorder(Rectangle.BOTTOM);
 			table.addCell(cell);
 
-			table.addCell(createCell(ctr.getFuncionario().getNome(), Element.ALIGN_CENTER));
+			table.addCell(createCell(nome, Element.ALIGN_CENTER));
 			table.addCell(createCell(""));
 			table.addCell(createCell(ctr.getEmpresa().getNome(), Element.ALIGN_CENTER));
 

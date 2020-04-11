@@ -66,4 +66,13 @@ public class Empresa {
 		this.representanteCpf = representanteCpf;
 	}
 
+	@Override
+	public String toString() {
+		return "Empresa [codigo=" + codigo + ", nome=" + nome + ", cnpj=" + cnpj + ", endereco=" + endereco
+				+ ", cidade=" + cidade + ", representanteNome=" + representanteNome + ", representanteCpf="
+				+ representanteCpf + "]";
+	}
+	
+	
+
 }
