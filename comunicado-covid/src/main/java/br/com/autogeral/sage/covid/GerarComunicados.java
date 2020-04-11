@@ -26,6 +26,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import br.com.autogeral.util.StringUtil;
+
 public class GerarComunicados {
 
 	public static void main(String a[]) {
@@ -46,7 +48,7 @@ public class GerarComunicados {
 					XSSFWorkbook workbook = new XSSFWorkbook();
 					i.criarPlanilhaSalarios(workbook, calculoSalario);
 
-					String nome = f.getNome().replace(" ", "").trim();
+					String nome = StringUtil.noDeadKeysToUpperCase(f.getNome().replace(" ", "")).trim();
 					File file = new File(nome + ".xlsx");
 					try (FileOutputStream fos = new FileOutputStream(file)) {
 						workbook.write(fos);
@@ -127,10 +129,11 @@ public class GerarComunicados {
 		nf.setGroupingUsed(false);
 		String bd = "f" + nf.format(empresa.getCodigo());
 
-		String query = "select f.codfun\n"
+		String query = "select h.codfun\n"
 		             + "  from " + bd + ".holerith h\n"
 				     + " where h.codeven='4910'\n"
 				     + "   and h.anomes='202003'";
+		System.out.println(query);
 		Set<Long> codFuns = new TreeSet<>();
 		try (Connection conn = ConnectionFactory.getConnection();
 				Statement stmt = conn.createStatement();
@@ -143,30 +146,30 @@ public class GerarComunicados {
 		return codFuns;
 	}
 
-	private Map<Long, List<Dependente>> buscarDependententes(Map<Long, Funcionario> fs) throws SQLException {
-		Map<Long, List<Dependente>> map = new HashMap<>();
-		// '000010','000018'
-		String query = "Select A.codfun, A.ordem, A.nome, A.datanasc, A.parentesco, A.datanasc, A.nomemae\n"
-				+ "   From f0004.parentes As A";
-		try (Connection conn = ConnectionFactory.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(query)) {
-			while (rs.next()) {
-				Dependente d = new Dependente();
-				preeche(d, rs);
-
-				List<Dependente> list = null;
-				if (map.containsKey(d.getCodfun())) {
-					list = map.get(d.getCodfun());
-				} else {
-					list = new ArrayList<>();
-					map.put(d.getCodfun(), list);
-				}
-				list.add(d);
-			}
-		}
-		return map;
-	}
+//	private Map<Long, List<Dependente>> buscarDependententes(Map<Long, Funcionario> fs) throws SQLException {
+//		Map<Long, List<Dependente>> map = new HashMap<>();
+//		// '000010','000018'
+//		String query = "Select A.codfun, A.ordem, A.nome, A.datanasc, A.parentesco, A.datanasc, A.nomemae\n"
+//				+ "   From f0004.parentes As A";
+//		try (Connection conn = ConnectionFactory.getConnection();
+//				Statement stmt = conn.createStatement();
+//				ResultSet rs = stmt.executeQuery(query)) {
+//			while (rs.next()) {
+//				Dependente d = new Dependente();
+//				preeche(d, rs);
+//
+//				List<Dependente> list = null;
+//				if (map.containsKey(d.getCodfun())) {
+//					list = map.get(d.getCodfun());
+//				} else {
+//					list = new ArrayList<>();
+//					map.put(d.getCodfun(), list);
+//				}
+//				list.add(d);
+//			}
+//		}
+//		return map;
+//	}
 
 //	private Map<Long, Map<Integer, Salario>> buscarSalarios(Map<Long, Funcionario> fs) throws SQLException {
 //		String query = "Select S.codeven, S.codfun, S.anomes, S.valor\n" + "  From f0004.salarios As S\n"
@@ -256,15 +259,15 @@ public class GerarComunicados {
 		f.setMae(rs.getString("mae").trim());
 	}
 
-	private void preeche(Dependente d, ResultSet rs) throws SQLException {
-		d.setCodfun(rs.getLong("codfun"));
-		d.setOrdem(rs.getInt("ordem"));
-		d.setNome(rs.getString("nome").trim());
-		Date nasc = rs.getDate("datanasc");
-		d.setDatanasc(nasc);
-		d.setParentesco(rs.getString("parentesco").trim());
-		d.setNomemae(rs.getString("nomemae").trim());
-	}
+//	private void preeche(Dependente d, ResultSet rs) throws SQLException {
+//		d.setCodfun(rs.getLong("codfun"));
+//		d.setOrdem(rs.getInt("ordem"));
+//		d.setNome(rs.getString("nome").trim());
+//		Date nasc = rs.getDate("datanasc");
+//		d.setDatanasc(nasc);
+//		d.setParentesco(rs.getString("parentesco").trim());
+//		d.setNomemae(rs.getString("nomemae").trim());
+//	}
 
 	private void preenche(Salario s, ResultSet rs) throws SQLException {
 		s.setCodfun(rs.getLong("codfun"));
@@ -297,14 +300,14 @@ public class GerarComunicados {
 			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(salario.getValor().doubleValue());
 		}
-		criaLinha(sheet.createRow(rowNum++), "Sal�rio M�dio : ", calculoSalario.getMedia());
+		criaLinha(sheet.createRow(rowNum++), "Salario Medio : ", calculoSalario.getMedia());
 		
 		rowNum++;
 		
 		criaLinha(sheet.createRow(rowNum++), "Faixa : ", calculoSalario.getFaixa());
-		criaLinha(sheet.createRow(rowNum++), "Sal�rio Empresa : ", calculoSalario.getSalarioEmpresa());
-		criaLinha(sheet.createRow(rowNum++), "Sal�rio Governo : ", calculoSalario.getSalarioGoverno());
-		criaLinha(sheet.createRow(rowNum++), "Sal�rio Total   : ", calculoSalario.getSalarioTotal());
+		criaLinha(sheet.createRow(rowNum++), "Salario Empresa : ", calculoSalario.getSalarioEmpresa());
+		criaLinha(sheet.createRow(rowNum++), "Salario Governo : ", calculoSalario.getSalarioGoverno());
+		criaLinha(sheet.createRow(rowNum++), "Salario Total   : ", calculoSalario.getSalarioTotal());
 	}
 
 	private void criaLinha(XSSFRow row, String string, int valor) {

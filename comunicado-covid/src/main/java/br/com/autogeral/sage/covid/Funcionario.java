@@ -259,7 +259,7 @@ public class Funcionario {
 
 		if (this.numero != null && !numero.trim().equals("")) {
 			if (sb.length() > 0) {
-				sb.append(", nï¿½ ");
+				sb.append(", nº ");
 			}
 			sb.append(this.numero);
 		}

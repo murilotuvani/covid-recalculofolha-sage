@@ -51,7 +51,7 @@ public class ContratoGerador {
 
 			String texto = ctr.getEmpresa().getNome() + ", CNPJ nº " + ctr.getEmpresa().getCnpj() + ", "
 					+ ctr.getEmpresa().getEndereco() + ", neste ato representada por "
-					+ ctr.getEmpresa().getRepresentanteNome() + ", CPF nº " + ctr.getEmpresa().getRepresentanteCpf();
+					+ ctr.getEmpresa().getRepresentanteNome() + ", CPF nº " + ctr.getEmpresa().getRepresentanteCpf() + ".";;
 			chunk = new Chunk(texto, FONT_NORMAL);
 			paragraph.add(chunk);
 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -62,8 +62,8 @@ public class ContratoGerador {
 			paragraph.add(chunk);
 
 			String nome = StringUtil.soPrimeiraMaiuscula(ctr.getFuncionario().getNome());
-			texto = nome + ", CPF nº " + ctr.getFuncionario().getCpf() + ", endereço "
-					+ ctr.getFuncionario().getEnderecoCompleto();
+			texto = nome + ", CPF nº " + ctr.getFuncionario().getCpf() + ", residente no endereço "
+					+ ctr.getFuncionario().getEnderecoCompleto() + ".";
 
 			chunk = new Chunk(texto, FONT_NORMAL);
 			paragraph.add(chunk);
@@ -87,7 +87,7 @@ public class ContratoGerador {
 
 			chunk = new Chunk(
 					" – O presente Termo Aditivo tem por objeto a redução proporcional de jornada de trabalho e de salário em 25% (vinte e cinco por cento), com fundamento na alínea “a”, do artigo 7º, inciso III, da Medida Provisória nº 936, preservado o valor do salário-hora de trabalho.\n"
-							+ "PARÁGRAFO ÚNICO. O prazo desta redução será de xx dias (MÁXIMO DE 90 DIAS) nos termos do artigo 7º da Medida Provisória n.º 936.");
+							+ "PARÁGRAFO ÚNICO. O prazo desta redução será de " + ctr.getDias()+ " dias nos termos do artigo 7º da Medida Provisória n.º 936.");
 			paragraph.add(chunk);
 
 			document.add(paragraph);
