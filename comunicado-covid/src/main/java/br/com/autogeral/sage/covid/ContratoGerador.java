@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -253,7 +254,7 @@ public class ContratoGerador {
 			document.add(Chunk.NEWLINE);
 
 			texto = ctr.getEmpresa().getCidade();
-			texto += ", " + DateFormat.getDateInstance(DateFormat.LONG).format(new Date()).toLowerCase();
+			texto += ", " + DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR")).format(new Date()).toLowerCase();
 			paragraph = new Paragraph(texto);
 			paragraph.setAlignment(Element.ALIGN_RIGHT);
 			paragraph.setFirstLineIndent(20);
