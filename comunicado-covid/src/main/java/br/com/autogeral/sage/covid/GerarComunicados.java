@@ -32,7 +32,7 @@ public class GerarComunicados {
 
 	public static void main(String a[]) {
 		try {
-			BigDecimal reducao = BigDecimal.valueOf(Double.valueOf(System.getProperty("reducao", "25")));
+			BigDecimal reducao = BigDecimal.valueOf(Double.valueOf(System.getProperty("reducao", "50")));
 			ContratoGerador cg = new ContratoGerador();
 			GerarComunicados i = new GerarComunicados();
 			for (Empresa empresa : i.getEmpresas()) {
@@ -215,7 +215,8 @@ public class GerarComunicados {
 				// " -- AND S.anomes='202003'\n" +
 				"   AND S.codeven='0000'\n" +
 				"  order by S.anomes desc\n" +
-				"  limit 6";
+				"  limit 3";
+		System.out.println(query);
 
 		// Map<Long, Map<Integer, Salario>> map = new TreeMap<>();
 

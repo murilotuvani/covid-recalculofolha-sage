@@ -54,7 +54,8 @@ public class CalculoSalario {
 			this.salarioGoverno = ajuda;
 		} else {
 			this.faixa = 3;
-			this.salarioGoverno = BigDecimal.valueOf(453.26);
+			// Limite maximo do seguro desemprego 1.813,03
+			this.salarioGoverno = BigDecimal.valueOf(1813.03).multiply(fatorReducao);
 		}
 		this.salarioTotal = this.salarioEmpresa.add(this.salarioGoverno);
 	}
